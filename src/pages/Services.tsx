@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Clock, IndianRupee } from "lucide-react";
+import { IndianRupee } from "lucide-react";
 
 interface Service {
   id: string;
@@ -12,6 +12,7 @@ interface Service {
   category: string;
   duration: string;
   price: string;
+  details?: string[];
 }
 
 const Services = () => {
@@ -73,15 +74,19 @@ const Services = () => {
                 <CardDescription>{service.description}</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex justify-between items-center text-sm text-muted-foreground">
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    <span>{service.duration}</span>
-                  </div>
-                  <div className="flex items-center gap-1 font-semibold text-primary">
-                    <IndianRupee className="h-4 w-4" />
-                    <span>{service.price.replace("₹", "")}</span>
-                  </div>
+                {service.details && service.details.length > 0 && (
+                  <ul className="mb-4 space-y-1">
+                    {service.details.map((detail, idx) => (
+                      <li key={idx} className="text-sm text-muted-foreground flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                <div className="flex items-center gap-1 font-semibold text-primary">
+                  <IndianRupee className="h-4 w-4" />
+                  <span>{service.price.replace("₹", "")}</span>
                 </div>
               </CardContent>
             </Card>
