@@ -84,9 +84,12 @@ const Services = () => {
                     ))}
                   </ul>
                 )}
-                <div className="flex items-center gap-1 font-semibold text-primary">
-                  <IndianRupee className="h-4 w-4" />
-                  <span>{service.price.replace("₹", "")}</span>
+                <div className="flex items-center gap-1 text-sm">
+                  <span className="text-muted-foreground">Starts at</span>
+                  <div className="flex items-center gap-1 font-semibold text-primary">
+                    <IndianRupee className="h-4 w-4" />
+                    <span>{service.price.replace("₹", "")}</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
