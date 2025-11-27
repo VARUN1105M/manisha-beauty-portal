@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { IndianRupee } from "lucide-react";
+import { IndianRupee, ArrowRight } from "lucide-react";
 
 interface Service {
   id: string;
@@ -16,6 +17,7 @@ interface Service {
 }
 
 const Services = () => {
+  const navigate = useNavigate();
   const [services, setServices] = useState<Service[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
 
@@ -63,10 +65,16 @@ const Services = () => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredServices.map((service) => (
-            <Card key={service.id} className="hover:shadow-lg transition-shadow">
+            <Card
+              key={service.id}
+              className="hover:shadow-lg transition-all cursor-pointer group"
+              onClick={() => navigate(`/services/${service.id}`)}
+            >
               <CardHeader>
                 <div className="flex justify-between items-start mb-2">
-                  <CardTitle className="font-serif text-xl">{service.name}</CardTitle>
+                  <CardTitle className="font-serif text-xl group-hover:text-primary transition-colors">
+                    {service.name}
+                  </CardTitle>
                   <Badge variant="secondary" className="capitalize">
                     {service.category}
                   </Badge>
@@ -75,21 +83,19 @@ const Services = () => {
               </CardHeader>
               <CardContent>
                 {service.details && service.details.length > 0 && (
-                  <ul className="mb-4 space-y-1">
-                    {service.details.map((detail, idx) => (
-                      <li key={idx} className="text-sm text-muted-foreground flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    {service.details.length} options available
+                  </p>
                 )}
-                <div className="flex items-center gap-1 text-sm">
-                  <span className="text-muted-foreground">Starts at</span>
-                  <div className="flex items-center gap-1 font-semibold text-primary">
-                    <IndianRupee className="h-4 w-4" />
-                    <span>{service.price.replace("₹", "")}</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1 text-sm">
+                    <span className="text-muted-foreground">Starts at</span>
+                    <div className="flex items-center gap-1 font-semibold text-primary">
+                      <IndianRupee className="h-4 w-4" />
+                      <span>{service.price.replace("₹", "")}</span>
+                    </div>
                   </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
                 </div>
               </CardContent>
             </Card>
